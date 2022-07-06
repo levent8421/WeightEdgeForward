@@ -1,6 +1,14 @@
 import json
 
 
+class DataPacketSend:
+    def __init__(self, service):
+        self.service = service
+
+    def send(self, addr, packet):
+        pass
+
+
 class ActionHandler:
     def handle_action(self, addr, sock, packet):
         return {
@@ -23,7 +31,8 @@ class HeartbeatActionHandler(ActionHandler):
 
 
 class DataPacketHandler:
-    def __init__(self):
+    def __init__(self, mqtt):
+        self.mqtt = mqtt
         self.handler_table = {
             'notify.startup': StartupActionHandler(),
             'notify.heartbeat': HeartbeatActionHandler(),
@@ -38,6 +47,7 @@ class DataPacketHandler:
         action = packet['action']
         action_version = packet['actionVersion']
         handler = self.get_handler(action)
+        self.send_mqtt(addr, packet)
         if not handler:
             resp_data = {
                 'code': 404,
@@ -83,3 +93,11 @@ class DataPacketHandler:
             pass
         else:
             print('Bad packet type:', packet_type)
+
+    def send_mqtt(self, addr, packet):
+        param = {
+            "addr": addr[0],
+            "port": addr[1],
+            "packet": packet
+        }
+        self.mqtt.mqtt_publish(topic="test", payload=param)
