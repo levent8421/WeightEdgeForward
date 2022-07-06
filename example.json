@@ -1,0 +1,16 @@
+{
+  "action": "notify.startup",
+  "actionVersion": "V0.1",
+  "data": {
+    "clientPort": 0
+  },
+  "destLogicalName": "SCADA_ECSMS",
+  "destPhysicalAddr": "127.0.0.1:8888",
+  "priority": 3,
+  "seqNo": "SCADA_WSA-127.0.0.1:58219-SCADA_ECSMS-127.0.0.1:8888-220705183121731",
+  "sourceLogicalName": "SCADA_WSA",
+  "sourcePhysicalAddr": "127.0.0.1:58219",
+  "traceId": "SCADA_WSA-127.0.0.1:58219-SCADA_ECSMS-127.0.0.1:8888-220705183121731",
+  "traceName": "Startup notify",
+  "type": "request"
+}
