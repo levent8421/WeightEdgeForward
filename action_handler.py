@@ -1,14 +1,6 @@
 import json
 
 
-class DataPacketSend:
-    def __init__(self, service):
-        self.service = service
-
-    def send(self, addr, packet):
-        pass
-
-
 class ActionHandler:
     def handle_action(self, addr, sock, packet):
         return {
@@ -80,6 +72,19 @@ class DataPacketHandler:
         sock.send(resp_json.encode())
         sock.send(b'\x03')
 
+    def handler_response(self, addr, sock, packet):
+        action = packet['action']
+        action_version = packet['actionVersion']
+        handler = self.get_handler(action)
+        self.send_mqtt(addr, packet)
+        if not handler:
+            resp_data = {
+                'code': 404,
+                'msg': f'can not find action:{action}'
+            }
+        else:
+            resp_data = handler.handle_action(addr, sock, packet)
+
     def handle_packet(self, addr, sock, packet):
         packet_obj = json.loads(packet)
         action = packet_obj['action']
@@ -90,7 +95,7 @@ class DataPacketHandler:
         if packet_type == 'request':
             self.handler_request(addr, sock, packet_obj)
         elif packet_type == 'response':
-            pass
+            self.handler_response(addr, sock, packet_obj)
         else:
             print('Bad packet type:', packet_type)
 
@@ -100,4 +105,4 @@ class DataPacketHandler:
             "port": addr[1],
             "packet": packet
         }
-        self.mqtt.mqtt_publish(topic="test", payload=param)
+        self.mqtt.mqtt_publish(topic="test", payload=json.dumps(param))
