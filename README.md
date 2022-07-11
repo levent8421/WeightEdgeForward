@@ -1,3 +1,16 @@
+# Envs
+> Python 3.8+
+
+
+# Install Requirements
+```shell
+pip3 install -r requirement.txt
+```
+or
+```shell
+pip install -r requirement.txt
+```
+
 # Config
 config.py
 ```python
@@ -14,4 +27,9 @@ class EdgeServiceConfig:
         self.mqtt_qos = 1
 ```
 
+# Startup
 
+Run main.py
+```shell
+python main.py
+```
