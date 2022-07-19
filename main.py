@@ -3,7 +3,7 @@ import json
 from action_handler import CommonsMQTTForwardActionHandler, HeartbeatActionHandler
 from config import edgeServiceConfigObj
 from edge_forward_service import ForwardService, DataPacketHandler
-from mqtt_client import MQTTClient
+from awsiot import MQTTClient
 
 DEFAULT_ACTION_VERSION = 'V0.1'
 

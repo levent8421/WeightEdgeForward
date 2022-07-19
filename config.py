@@ -9,6 +9,10 @@ class EdgeServiceConfig:
         self.mqtt_forward_topic = 'weight_msg_forward'
         self.mqtt_subscribe_topic = 'weight_msg_subscribe'
         self.mqtt_qos = 1
+        self.mqtt_client_id = 'python_mqtt_bridge_01'
+        self.aws_root_ca_path = ''
+        self.aws_private_key_path = ''
+        self.aws_certificate_path = ''
 
 
 edgeServiceConfigObj = EdgeServiceConfig()
