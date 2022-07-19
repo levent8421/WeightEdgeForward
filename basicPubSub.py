@@ -15,14 +15,16 @@
  */
  '''
 
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
-import logging
-import time
 import argparse
 import json
+import logging
+import time
+
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
 # AllowedActions = ['both', 'publish', 'subscribe']
 AllowedActions = ['subscribe']
+
 
 # Custom MQTT message callback
 def customCallback(client, userdata, message):
@@ -46,7 +48,7 @@ parser.add_argument("-id", "--clientId", action="store", dest="clientId", defaul
                     help="Targeted client id")
 parser.add_argument("-t", "--topic", action="store", dest="topic", default="sdk/test/Python", help="Targeted topic")
 parser.add_argument("-m", "--mode", action="store", dest="mode", default="subscribe",
-                    help="Operation modes: %s"%str(AllowedActions))
+                    help="Operation modes: %s" % str(AllowedActions))
 parser.add_argument("-M", "--message", action="store", dest="message", default="Hello World!",
                     help="Message to publish")
 
@@ -96,6 +98,7 @@ else:
     myAWSIoTMQTTClient = AWSIoTMQTTClient(clientId)
     myAWSIoTMQTTClient.configureEndpoint(host, port)
     myAWSIoTMQTTClient.configureCredentials(rootCAPath, privateKeyPath, certificatePath)
+    print('connect with:', clientId, host, port, rootCAPath, privateKeyPath, certificatePath)
 
 # AWSIoTMQTTClient connection configuration
 myAWSIoTMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
