@@ -96,7 +96,7 @@ class PacketDecoder:
         self.buffer = BytesIO()
         self.handler.handle_packet(self.addr, self.sock, pack)
 
-    def push_date(self, data):
+    def push_data(self, data):
         data_size = len(data)
         i = 0
         cursor = 0
@@ -159,7 +159,7 @@ class ServiceTask:
             print('Unexpected socket:', sock)
             return
         decoder = self._get_decoder(sock)
-        decoder.push_date(data)
+        decoder.push_data(data)
 
     def handle_connection_event(self, sock_list):
         for sock in sock_list:

@@ -1,9 +1,9 @@
 import json
 
 from action_handler import CommonsMQTTForwardActionHandler, HeartbeatActionHandler
+from awsiot import MQTTClient
 from config import edgeServiceConfigObj
 from edge_forward_service import ForwardService, DataPacketHandler
-from awsiot import MQTTClient
 
 DEFAULT_ACTION_VERSION = 'V0.1'
 
@@ -18,16 +18,28 @@ def response_packet_handler(mqtt_client):
 
 
 def init_action_handlers(packet_handler, mqtt_client, service):
-    packet_handler.add_request_handler(
-        'notify.heartbeat',
-        DEFAULT_ACTION_VERSION,
-        HeartbeatActionHandler(mqtt_client, service)
-    )
-    packet_handler.add_request_handler(
-        'notify.startup',
-        DEFAULT_ACTION_VERSION,
-        CommonsMQTTForwardActionHandler(mqtt_client)
-    )
+    actions = {
+        "notify.heartbeat": HeartbeatActionHandler(mqtt_client, service),
+        "notify.startup": CommonsMQTTForwardActionHandler(mqtt_client),
+        "ruok.get": CommonsMQTTForwardActionHandler(mqtt_client),
+        "balance.no.set": CommonsMQTTForwardActionHandler(mqtt_client),
+        "balance.sku.set": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.th_sensor.window_records": CommonsMQTTForwardActionHandler(mqtt_client),
+        "th_sensor.set_params": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.th_sensor.status": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.balance.state": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.balance.weight_changed": CommonsMQTTForwardActionHandler(mqtt_client),
+        "balance.data.get": CommonsMQTTForwardActionHandler(mqtt_client),
+        "balance.groups.get": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.balance.merged": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.balance.unmerged": CommonsMQTTForwardActionHandler(mqtt_client),
+        "thsensor.data.get": CommonsMQTTForwardActionHandler(mqtt_client),
+        "notify.th_sensor.point_records": CommonsMQTTForwardActionHandler(mqtt_client),
+        "balance.valid.set": CommonsMQTTForwardActionHandler(mqtt_client),
+        "th_sensor.eoable_set": CommonsMQTTForwardActionHandler(mqtt_client),
+    }
+    for action in actions.keys():
+        packet_handler.add_request_handler(action, DEFAULT_ACTION_VERSION, actions[action])
 
 
 def read_prop(props, name):
